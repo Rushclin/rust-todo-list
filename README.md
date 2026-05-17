@@ -107,6 +107,8 @@ Then verify it works:
 todo --version
 ```
 
+If ```todo``` command not work, try to use ```todo-cli```
+
 ---
 
 ## 📦 Dependencies
