@@ -1,22 +1,51 @@
-use clap::Parser;
-use serde_json::json;
+mod commands;
+mod storage;
+mod todo;
 
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Args {
-    name: String,
-    count: u8,
+use clap::{Parser, Subcommand};
+
+#[derive(Parser)]
+#[command(
+    name = "todo",
+    about = "📝 A command-line task manager",
+    version = "1.0",
+    author = "Rushclin Takam 🚀"
+)]
+struct Cli {
+    #[command(subcommand)]
+    command: Command,
+}
+
+#[derive(Subcommand)]
+enum Command {
+    Add {
+        title: String,
+    },
+
+    List {
+        #[arg(short, long)]
+        all: bool,
+    },
+
+    Done {
+        id: u32,
+    },
+
+    Remove {
+        id: u32,
+    },
+
+    Clear,
 }
 
 fn main() {
-    println!("Hello, world!");
+    let cli = Cli::parse();
 
-    let args = Args::parse();
-    let json = json!({
-        "name": "Takam"
-    });
-
-    println!("{:?}", args);
-    println!("{:?}", json);
-    println!("Le nom est {}", json["name"])
+    match cli.command {
+        Command::Add { title } => commands::add(title),
+        Command::List { all } => commands::list(all),
+        Command::Done { id } => commands::complete(id),
+        Command::Remove { id } => commands::remove(id),
+        Command::Clear => commands::clear_done(),
+    }
 }
