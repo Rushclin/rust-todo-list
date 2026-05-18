@@ -267,6 +267,7 @@ todo list --help
 todo completed --help
 todo remove --help
 todo clear --help
+todo priority --help
 ```
 
 ---
@@ -282,6 +283,7 @@ cargo run -- list --all
 cargo run -- completed 0
 cargo run -- remove 1
 cargo run -- clear
+cargo run -- priority 0 3
 ```
 
 > The `--` separates Cargo's own arguments from your program's arguments.
