@@ -8,7 +8,7 @@ use clap::{Parser, Subcommand};
 #[command(
     name = "todo",
     about = "📝 A command-line task manager",
-    version = "1.0",
+    version = "1.0.1",
     author = "Rushclin Takam 🚀"
 )]
 struct Cli {
@@ -36,6 +36,11 @@ enum Command {
     },
 
     Clear,
+
+    Prioritize {
+        id: u32,
+        priority: u8,
+    }
 }
 
 fn main() {
@@ -47,5 +52,6 @@ fn main() {
         Command::Done { id } => commands::complete(id),
         Command::Remove { id } => commands::remove(id),
         Command::Clear => commands::clear_done(),
+        Command::Prioritize { id, priority } => commands::prioritize(id, priority),
     }
 }

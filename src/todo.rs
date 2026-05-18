@@ -6,6 +6,7 @@ pub struct Todo {
     pub id: u32,
     pub title: String,
     pub completed: bool,
+    pub priority: u8,
     pub created_at: DateTime<Local>,
 }
 
@@ -15,6 +16,7 @@ impl Todo {
             id,
             title,
             completed: false,
+            priority: 1, // Default 1.
             created_at: Local::now(),
         }
     }
@@ -41,6 +43,7 @@ impl TodoList {
         self.todos.retain(|t| t.id != id);
         return before != self.todos.len();
     }
+
     pub fn completed(&mut self, id: u32) -> bool {
         if let Some(todo) = self.todos.iter_mut().find(|t| t.id == id) {
             todo.completed = true;
@@ -49,8 +52,18 @@ impl TodoList {
             return false;
         }
     }
+
     pub fn list(&self) -> &Vec<Todo> {
         &self.todos
     }
 
+    pub fn prioritize(&mut self, id: u32, priority: u8) -> bool {
+        // self.todos.sort_by(|a, b| b.priority.cmp(&a.priority));
+        if let Some(todo) = self.todos.iter_mut().find(|t| t.id == id) {
+            todo.priority = priority;
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

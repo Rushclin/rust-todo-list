@@ -27,7 +27,7 @@ pub fn list(all: bool) {
         return;
     }
 
-    println!("{:<5} {:<8} {}", "ID", "STATUS", "TITLE");
+    println!("{:<5} {:<8} {} {}", "ID", "STATUS", "PRIORITY", "TITLE");
     println!("{}", "-".repeat(40));
 
     for todo in filtered {
@@ -37,7 +37,7 @@ pub fn list(all: bool) {
         } else {
             todo.title.clone()
         };
-        println!("#{:<4} {} {}", todo.id, status, title);
+        println!("#{:<4} {} {} {}", todo.id, status, todo.priority, title);
     }
 }
 
@@ -70,6 +70,16 @@ pub fn clear_done() {
     let removed = before - list.todos.len();
     save_or_exit(&list);
     println!("🧹 {removed} completed task(s) deleted.");
+}
+
+pub fn prioritize(id: u32, priority: u8) {
+    let mut list = load_or_exit();
+    if list.prioritize(id, priority) {
+        println!("Adding priority {priority} to task #{id}");
+    }else{
+        eprintln!("❌ No task found with ID #{id}");
+        std::process::exit(1)
+    }
 }
 
 // ── Internal helpers ──────────────────────────────────────────────────────────
